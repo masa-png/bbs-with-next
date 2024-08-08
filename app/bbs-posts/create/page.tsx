@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import React from "react";
+import { postBBS } from "@/app/actions/postBBSAction";
 import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
@@ -44,19 +45,7 @@ const CreateBBSPage = () => {
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
     const { username, title, content } = value;
-    try {
-      await fetch("http://localhost:3000/api/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, title, content }),
-      });
-      router.push("/");
-      router.refresh();
-    } catch (err) {
-      console.log(err);
-    }
+    postBBS({ username, title, content });
   }
 
   return (
